@@ -531,7 +531,6 @@ class EPMEvaluator extends Evaluator[BinarySolution] {
   def initialiseNonBigData(problema: EPMProblem, attrs: Seq[Attribute]): Seq[Seq[BitSet]] = {
 
     val enum = problema.getData.enumerateInstances()
-    //val set: Seq[Seq[BitSet]] = new ArrayBuffer[ArrayBuffer[BitSet]]()
 
     // Create for each selector (attribute-value pair) its corresponding bitset
     // This bit set is empty at the beginning
@@ -544,28 +543,33 @@ class EPMEvaluator extends Evaluator[BinarySolution] {
     })
 
     // for each instance calculate its belonging to each selector
-    var count = 0
+    var instanceIndex: Int = 0
+
     while (enum.hasMoreElements) {
       val instance = enum.nextElement()
 
       for (variable <- problema.getAttributes.indices.dropRight(1)) {
-        if (problema.getAttributes(variable).isNominal) {
-          // if nominal variable:
-          // Set the value that correspond to the nominal value directly
-          set(variable)(instance.value(variable).toInt).set(count)
+        val attrValue: Double = instance.value(variable)
+        if(attrValue.isNaN){
+          // if NaN, the instance value is lost. Mark as covered by all the values of the variable by default.
+          set(variable).foreach(_.set(instanceIndex))
         } else {
-          // if numeric variable:
-          // calculate the fuzzy value with the maximum membership degree
-          val degrees = problema.getFuzzyVariable(variable).map(x => x.membership(instance.value(variable)))
-          val max = degrees.max
-
-          val indexOfMax: Int = degrees.indexOf(max)
-
-          set(variable)(indexOfMax).set(count)
+          if (problema.getAttributes(variable).isNominal) {
+            // if nominal variable:
+            // Set the value that correspond to the nominal value directly
+            set(variable)(attrValue.toInt).set(instanceIndex)
+          } else {
+            // if numeric variable:
+            // calculate the fuzzy value with the maximum membership degree
+            val degrees: Seq[Double] = problema.getFuzzyVariable(variable).map(_.membership(attrValue))
+            val max: Double = degrees.max
+            val indexOfMax: Int = degrees.indexOf(max)
+            set(variable)(indexOfMax).set(instanceIndex)
+          }
         }
       }
 
-      count += 1
+      instanceIndex += 1
     }
 
     //return

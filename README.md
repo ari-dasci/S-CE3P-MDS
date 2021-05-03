@@ -63,7 +63,7 @@ Usage: <main class> [-BhSv] [--kafkabroker=NAME] [--maxSamples=Number]
 
 ## Execution
 
-The execution of the method using Apache Kafka and Apache Spark Streaming is performed by means of setting the *-B* and *-S* flags. In addition, the training file will contain only the ARFF header file. No test file should be provided as the methods follows a test-then-train approach. Threfore, test file must be *null*. 
+The execution of the method using Apache Kafka and Apache Spark Streaming is performed by means of setting the *-B* and *-S* flags. In addition, the training file will contain only the ARFF header file. No test file should be provided as the methods follows a test-then-train approach. Therefore, test file must be *null*. 
 
 The most basic execution of CE3P-MDS under a Spark Standalone  cluster is as follows:
 ```
