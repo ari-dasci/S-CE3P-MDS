@@ -74,9 +74,9 @@ This will execute the algorithm with the default parameters. Then, it waits for 
 
 ## Study
 
-Files to execute the experimental study carried out in the paper are available in: https://drive.google.com/file/d/1VwxfHC05bvRAicBfXqCNFznE2IYXee5w/view?usp=drivesdk.
+Files to execute the experimental study carried out in the paper are available in the _experimental_analysis.tar.xz_ file.
 
 For the correct execution you must have an Apache Kafka topic configured by the defult configuration, name "test".
 
-The scripts can be executed in the following order: _generateArtificialDatasets_, _runStreaming_ and _runScalability_. Usage instructions are written as comments in the scripts. Read them carefully before running them.
+Usage instructions are written as comments in the scripts. Read them carefully before running them.
 
